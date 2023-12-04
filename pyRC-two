@@ -1,0 +1,34 @@
+from microbit import *
+import radio
+
+me = 'Callum'
+myChannel = 47
+
+radio.config(channel=myChannel)
+radio.config(length=250)
+radio.on()
+
+print('##############################')
+print('## pyRC - Python Relay Chat ##')
+print('## Microbit Edition         ##')
+print('##############################\n')
+
+print('Press (A) to transmit')
+
+while True:
+  if button_a.was_pressed():
+        outMsg = input(me + ' > ')
+        print('Sending....')
+        radio.send(me + ':' + outMsg)
+        display.scroll('S', wait=False)
+    
+  inMsg = radio.receive()
+  
+  if inMsg:
+      source, payload = inMsg.split(':')
+      print(source + ' > ' + payload)
+      reply = input(me + ' > ')
+      radio.send('Sent')
+      display.scroll('S', wait=False)
+
+            
